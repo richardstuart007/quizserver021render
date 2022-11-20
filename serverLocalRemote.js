@@ -2,8 +2,8 @@
 //  Libraries
 //
 const express = require('express')
-const myCorsLocalTest = require('./myCors/myCorsLocalTest')
-const myRouterLocalTest = require('./myRouter/myRouterLocalTest')
+const myCorsLocalRemote = require('./myCors/myCorsLocalRemote')
+const myRouterLocalRemote = require('./myRouter/myRouterLocalRemote')
 const { format } = require('date-fns')
 //..............................................................................
 //.  Initialisation
@@ -12,11 +12,11 @@ const { format } = require('date-fns')
 //  Counter
 //
 let logCounter = 0
-const quizserver = 'quizServerLocalTest'
+const serverName = 'serverLocalRemote'
 //
 // Constants
 //
-const { LOCAL_URL_PORT_TEST } = require('./quizServerConstants')
+const { REMOTE_URL_PORT } = require('./serverConstants')
 //
 // Express
 //
@@ -25,15 +25,15 @@ app.use(express.json())
 //
 //  Cors Middleware
 //
-app.options('*', myCorsLocalTest)
-app.use(myCorsLocalTest)
+app.options('*', myCorsLocalRemote)
+app.use(myCorsLocalRemote)
 //
 //  Router
 //
-app.use(myRouterLocalTest)
+app.use(myRouterLocalRemote)
 //..............................................................................
 //.  Start Server
 //.............................................................................
 const TimeStamp = format(new Date(), 'yyLLddHHmmss')
-let logMessage = `SERVER.. ${logCounter} Time:${TimeStamp} QuizServer(${quizserver}) running on PORT(${LOCAL_URL_PORT_TEST})`
-app.listen(LOCAL_URL_PORT_TEST, () => console.log(logMessage))
+let logMessage = `SERVER.. ${logCounter} Time:${TimeStamp} serverName(${serverName}) running on PORT(${REMOTE_URL_PORT})`
+app.listen(REMOTE_URL_PORT, () => console.log(logMessage))

@@ -31,7 +31,7 @@ const {
   URL_SIGNIN,
   URL_TABLES,
   URL_REGISTER
-} = require('./quizServerConstants.js.js')
+} = require('./serverConstants')
 //
 // Knex (LOCAL)
 //

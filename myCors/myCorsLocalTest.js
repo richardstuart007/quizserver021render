@@ -3,7 +3,7 @@ const debugLog = false
 //
 // Whitelist of valid hosts
 //
-const { CORS_WHITELIST_LOCAL_TEST } = require('../quizServerConstants.js')
+const { CORS_WHITELIST_LOCAL_TEST } = require('../serverConstants')
 //
 //  Cors options
 //

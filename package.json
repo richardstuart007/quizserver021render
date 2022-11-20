@@ -3,13 +3,13 @@
   "homepage": ".",
   "version": "1.21.0",
   "description": "Quiz Server",
-  "main": "script.js",
+  "main": "node serverRemote.js",
   "scripts": {
-    "start": "node quizServerRemote.js",
-    "startlocal": "node quizServerLocal.js",
-    "startlocalTest": "node quizServerLocalTest.js",
-    "startlocalremote": "node quizServerLocalRemote.js",
-    "dev": "nodemon quizServerLocalTest.js"
+    "start": "node serverRemote.js",
+    "startlocal": "node serverLocal.js",
+    "startlocalTest": "node serverLocalTest.js",
+    "startlocalremote": "node serverLocalRemote.js",
+    "dev": "nodemon serverLocalTest.js"
   },
   "author": "Richard",
   "license": "ISC",
