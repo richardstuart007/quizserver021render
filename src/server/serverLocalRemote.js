@@ -2,8 +2,8 @@
 //  Libraries
 //
 const express = require('express')
-const myCorsRemote = require('./myCors/myCorsRemote')
-const myRouterRemote = require('./myRouter/myRouterRemote')
+const myCorsLocalRemote = require('./../myCors/myCorsLocalRemote')
+const myRouterLocalRemote = require('./../myRouter/myRouterLocalRemote')
 const { format } = require('date-fns')
 //..............................................................................
 //.  Initialisation
@@ -12,11 +12,11 @@ const { format } = require('date-fns')
 //  Counter
 //
 let logCounter = 0
-const serverName = 'serverRemote'
+const serverName = 'serverLocalRemote'
 //
 // Constants
 //
-const { REMOTE_URL_PORT } = require('./serverConstants')
+const { REMOTE_URL_PORT } = require('./serverConstants.js')
 //
 // Express
 //
@@ -25,12 +25,12 @@ app.use(express.json())
 //
 //  Cors Middleware
 //
-app.options('*', myCorsRemote)
-app.use(myCorsRemote)
+app.options('*', myCorsLocalRemote)
+app.use(myCorsLocalRemote)
 //
 //  Router
 //
-app.use(myRouterRemote)
+app.use(myRouterLocalRemote)
 //..............................................................................
 //.  Start Server
 //.............................................................................

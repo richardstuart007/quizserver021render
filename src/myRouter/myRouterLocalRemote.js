@@ -32,7 +32,7 @@ const {
   URL_SIGNIN,
   URL_TABLES,
   URL_REGISTER
-} = require('../serverConstants')
+} = require('./../server/serverConstants.js')
 //
 // Knex (LOCAL)
 //

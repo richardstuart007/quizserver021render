@@ -1,15 +1,15 @@
 {
   "name": "quizserver021render",
   "homepage": ".",
-  "version": "1.21.0",
+  "version": "1.21.1",
   "description": "Quiz Server",
-  "main": "node serverRemote.js",
+  "main": "node src/server/serverRemote.js",
   "scripts": {
-    "start": "node serverRemote.js",
-    "startlocal": "node serverLocal.js",
-    "startlocalTest": "node serverLocalTest.js",
-    "startlocalremote": "node serverLocalRemote.js",
-    "dev": "nodemon serverLocalTest.js"
+    "start": "node src/server/serverRemote.js",
+    "startlocal": "node src/server/serverLocal.js",
+    "startlocalTest": "node src/server/serverLocalTest.js",
+    "startlocalremote": "node src/server/serverLocalRemote.js",
+    "dev": "nodemon src/server/serverLocalTest.js"
   },
   "author": "Richard",
   "license": "ISC",
