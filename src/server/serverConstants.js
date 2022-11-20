@@ -49,6 +49,8 @@ exports.CORS_WHITELIST_LOCAL_REMOTE = [
 ]
 exports.CORS_WHITELIST_REMOTE = [
   'https://quizclient021render.onrender.com',
+  'https://quizdataentry021render.onrender.com',
   'Postman',
-  'http://localhost:9103'
+  'http://localhost:9103',
+  'http://localhost:9102'
 ]
