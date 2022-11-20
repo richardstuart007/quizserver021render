@@ -50,5 +50,5 @@ exports.CORS_WHITELIST_LOCAL_REMOTE = [
 exports.CORS_WHITELIST_REMOTE = [
   'https://quizclient021render.onrender.com',
   'Postman',
-  'https://quizclient021n.netlify.app'
+  'http://localhost:9103'
 ]
