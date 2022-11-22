@@ -15,7 +15,7 @@ const myRouterLocal = require('./../myRouter/myRouterLocal')
 //  Counter
 //
 let logCounter = 0
-const serverName = 'serverLocal'
+const moduleName = 'serverLocal'
 //
 // Constants
 //
@@ -38,5 +38,5 @@ app.use(myRouterLocal)
 //.  Start Server
 //.............................................................................
 const TimeStamp = format(new Date(), 'yyLLddHHmmss')
-let logMessage = `SERVER.. ${logCounter} Time:${TimeStamp} serverName(${serverName}) running on PORT(${LOCAL_URL_PORT})`
+let logMessage = `Server.. ${logCounter} Time:${TimeStamp} Module(${moduleName}) running on PORT(${LOCAL_URL_PORT})`
 app.listen(LOCAL_URL_PORT, () => console.log(logMessage))

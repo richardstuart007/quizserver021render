@@ -4,37 +4,25 @@
 //
 // Constants
 //
-const log = false
-const reference = 'serverRawHandler'
-//
-//  Global Variable - Define return object
-//
-const CatchFunction = 'serverRawHandler'
-const SqlFunction = 'serverRawHandler'
-var returnObject = {
-  returnValue: '',
-  returnMessage: '',
-  returnSqlFunction: '',
-  returnCatchFunction: '',
-  returnCatch: false,
-  returnCatchMsg: '',
-  returnRows: []
+const debugLog = false
+const moduleName = 'serverRawHandler'
+//.................................
+//  Object returned by this module
+//.................................
+const rtnObj = {
+  rtnValue: false,
+  rtnMessage: '',
+  rtnSqlFunction: moduleName,
+  rtnCatchFunction: '',
+  rtnCatch: false,
+  rtnCatchMsg: '',
+  rtnRows: []
 }
 //==================================================================================
 //= Main ASYNC Function
 //==================================================================================
 async function serverRawHandler(db, bodyParms) {
   try {
-    //
-    // Initialise Global Variables
-    //
-    returnObject.returnValue = false
-    returnObject.returnMessage = ''
-    returnObject.returnSqlFunction = SqlFunction
-    returnObject.returnCatchFunction = ''
-    returnObject.returnCatch = ''
-    returnObject.returnCatchMsg = ''
-    returnObject.returnRows = []
     //..................................................................................
     //. Parameter Validation
     //..................................................................................
@@ -43,14 +31,13 @@ async function serverRawHandler(db, bodyParms) {
     //
     const { sqlAction, sqlString, sqlTable, sqlWhere, sqlOrderByRaw, sqlRow, sqlKeyName } =
       bodyParms
-    if (log) console.log(`${reference} - sqlAction ${sqlAction} sqlRow ${sqlRow} `)
+    if (debugLog) console.log(`module(${moduleName}) sqlAction ${sqlAction}`)
     //
     // Check values sent
     //
     if (!sqlAction) {
-      returnObject.returnValue = false
-      returnObject.returnMessage = `SqlAction parameter not passed`
-      return returnObject
+      rtnObj.rtnMessage = `SqlAction parameter not passed`
+      return rtnObj
     }
     //
     //  Validate sqlAction type
@@ -64,30 +51,27 @@ async function serverRawHandler(db, bodyParms) {
       sqlAction !== 'UPDATE' &&
       sqlAction !== 'UPSERT'
     ) {
-      returnObject.returnValue = false
-      returnObject.returnMessage = `SqlAction ${sqlAction}: SqlAction not valid`
-      return returnObject
+      rtnObj.rtnMessage = `SqlAction ${sqlAction}: SqlAction not valid`
+      return rtnObj
     }
     //
     //  SELECTSQL needs sqlString
     //
     if (sqlAction === 'SELECTSQL' && !sqlString) {
-      returnObject.returnValue = false
-      returnObject.returnMessage = `SqlAction ${sqlAction}: sqlString not passed`
-      return returnObject
+      rtnObj.rtnMessage = `SqlAction ${sqlAction}: sqlString not passed`
+      return rtnObj
     }
     //
     //  not SELECTSQL needs table
     //
     if (sqlAction !== 'SELECTSQL' && !sqlTable) {
-      returnObject.returnValue = false
-      returnObject.returnMessage = `SqlAction ${sqlAction}: sqlTable not passed`
-      return returnObject
+      rtnObj.rtnMessage = `SqlAction ${sqlAction}: sqlTable not passed`
+      return rtnObj
     }
     //
     // Get Database record (ASYNC)
     //
-    const responseSql = await serverRawserverRawait(
+    await sqlDatabase(
       db,
       sqlAction,
       sqlString,
@@ -97,38 +81,22 @@ async function serverRawHandler(db, bodyParms) {
       sqlRow,
       sqlKeyName
     )
-    //
-    // Return Results
-    //
-    await responseSql
-    //
-    // Update Return Values
-    //
-    if (responseSql[0]) {
-      returnObject.returnValue = true
-      returnObject.returnMessage = `SqlAction ${sqlAction}: SUCCESS`
-      returnObject.returnRows = responseSql
-    } else {
-      returnObject.returnValue = false
-      returnObject.returnMessage = `SqlAction ${sqlAction}: FAILED`
-      returnObject.returnRows = responseSql
-    }
-    return returnObject
+    return rtnObj
     //
     // Errors
     //
   } catch (err) {
-    console.log(err.message)
-    returnObject.returnCatch = true
-    returnObject.returnCatchMsg = err.message
-    returnObject.returnCatchFunction = CatchFunction
-    return returnObject
+    console.log(`module(${moduleName}) `, err.message)
+    rtnObj.rtnCatch = true
+    rtnObj.rtnCatchMsg = err.message
+    rtnObj.rtnCatchFunction = moduleName
+    return rtnObj
   }
 }
 //!==================================================================================
 //! Main function - Await
 //!==================================================================================
-async function serverRawserverRawait(
+async function sqlDatabase(
   db,
   sqlAction,
   sqlString,
@@ -141,41 +109,39 @@ async function serverRawserverRawait(
   //
   // Define Return Variable
   //
-  var ResultSql = false
-  //
-  //
+  let sqlData
   try {
     switch (sqlAction) {
       case 'SELECTSQL':
-        ResultSql = await db.select(db.raw(sqlString))
+        sqlData = await db.select(db.raw(sqlString))
         break
       case 'SELECT':
         if (sqlOrderByRaw) {
-          ResultSql = await db
-            .select('*')
-            .from(sqlTable)
-            .whereRaw(sqlWhere)
-            .orderByRaw(sqlOrderByRaw)
+          sqlData = await db.select('*').from(sqlTable).whereRaw(sqlWhere).orderByRaw(sqlOrderByRaw)
         } else {
-          ResultSql = await db.select('*').from(sqlTable).whereRaw(sqlWhere)
+          sqlData = await db.select('*').from(sqlTable).whereRaw(sqlWhere)
         }
         break
       case 'UPDATE':
-        ResultSql = await db.update(sqlRow).from(sqlTable).whereRaw(sqlWhere).returning(['*'])
+        sqlData = await db.update(sqlRow).from(sqlTable).whereRaw(sqlWhere).returning(['*'])
         break
       case 'DELETE':
-        ResultSql = await db.del().from(sqlTable).whereRaw(sqlWhere).returning(['*'])
+        sqlData = await db.del().from(sqlTable).whereRaw(sqlWhere).returning(['*'])
         break
       case 'INSERT':
-        ResultSql = await db
-          .insert(sqlRow)
-          .into(sqlTable)
-          .returning(['*'])
-          .onConflict(sqlKeyName)
-          .ignore()
+        if (sqlKeyName) {
+          sqlData = await db
+            .insert(sqlRow)
+            .into(sqlTable)
+            .returning(['*'])
+            .onConflict(sqlKeyName)
+            .ignore()
+        } else {
+          sqlData = await db.insert(sqlRow).into(sqlTable).returning(['*'])
+        }
         break
       case 'UPSERT':
-        ResultSql = await db
+        sqlData = await db
           .insert(sqlRow)
           .into(sqlTable)
           .returning(['*'])
@@ -184,19 +150,28 @@ async function serverRawserverRawait(
         break
     }
     //
-    // Return Record found
+    //  No results
     //
-    await ResultSql
-    return ResultSql
+    if (!sqlData || !sqlData[0]) {
+      rtnObj.rtnMessage = `SqlAction ${sqlAction}: FAILED`
+      return
+    }
+    //
+    // Update Return Values
+    //
+    rtnObj.rtnValue = true
+    rtnObj.rtnMessage = `SqlAction ${sqlAction}: SUCCESS`
+    rtnObj.rtnRows = sqlData
+    return
     //
     // Errors
     //
   } catch (err) {
-    console.log(err.message)
-    returnObject.returnCatch = true
-    returnObject.returnCatchMsg = err.message
-    returnObject.returnCatchFunction = CatchFunction
-    return null
+    console.log(`module(${moduleName}) `, err.message)
+    rtnObj.rtnCatch = true
+    rtnObj.rtnCatchMsg = err.message
+    rtnObj.rtnCatchFunction = moduleName
+    return
   }
 }
 //!==================================================================================

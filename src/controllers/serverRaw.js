@@ -6,20 +6,19 @@ const serverRawHandler = require('./serverRawHandler')
 //
 // Constants
 //
-const log = false
-const reference = 'Raw'
+const debugLog = false
+const moduleName = 'serverRaw'
 //
-//  Global Variable - Define return object
+//  Object returned by this handler
 //
-const CatchFunction = 'Raw'
-var returnObject = {
-  returnValue: '',
-  returnMessage: '',
-  returnSqlFunction: '',
-  returnCatchFunction: '',
-  returnCatch: false,
-  returnCatchMsg: '',
-  returnRows: []
+let rtnObj = {
+  rtnValue: false,
+  rtnMessage: '',
+  rtnSqlFunction: moduleName,
+  rtnCatchFunction: '',
+  rtnCatch: false,
+  rtnCatchMsg: '',
+  rtnRows: []
 }
 //==================================================================================
 //= Get a row from a table : table, keyName, keyValue are passed in Body
@@ -29,19 +28,8 @@ async function serverRaw(req, res, db, logCounter) {
   //  Time Stamp
   //
   const TimeStamp = format(new Date(), 'yyLLddHHmmss')
-  let logMessage = `Handler. ${logCounter} Time:${TimeStamp}`
-
+  let logMessage = `Handler. ${logCounter} Time:${TimeStamp} Module(${moduleName})`
   try {
-    //
-    // Initialise Global Variables
-    //
-    returnObject.returnValue = false
-    returnObject.returnMessage = ''
-    returnObject.returnSqlFunction = ''
-    returnObject.returnCatchFunction = ''
-    returnObject.returnCatch = ''
-    returnObject.returnCatchMsg = ''
-    returnObject.returnRows = []
     //..................................................................................
     //. Check values sent in Body
     //..................................................................................
@@ -58,9 +46,8 @@ async function serverRaw(req, res, db, logCounter) {
     //  Check Action passed
     //
     if (!sqlAction) {
-      returnObject.returnMessage = `sqlAction not sent as Body Parameters`
-      returnObject.returnCatchFunction = CatchFunction
-      return res.status(400).json(returnObject)
+      rtnObj.rtnMessage = `sqlAction not sent as Body Parameters`
+      return res.status(400).json(rtnObj)
     }
     //
     //  Validate sqlAction type
@@ -74,10 +61,9 @@ async function serverRaw(req, res, db, logCounter) {
       sqlAction !== 'UPDATE' &&
       sqlAction !== 'UPSERT'
     ) {
-      returnObject.returnMessage = `sqlAction ${sqlAction}: sqlAction not valid`
-      return res.status(400).json(returnObject)
+      rtnObj.rtnMessage = `sqlAction ${sqlAction}: sqlAction not valid`
+      return res.status(400).json(rtnObj)
     }
-
     //
     // Process Request Promises(ALL)
     //
@@ -86,38 +72,39 @@ async function serverRaw(req, res, db, logCounter) {
     // Parse Results
     //
     const returnDataObject = returnData[0]
-    returnObject = Object.assign({}, returnObject, returnDataObject)
+    rtnObj = Object.assign({}, returnDataObject)
     //
     //  Return values
     //
-    if (log) {
-      console.log(`HANDLER. ${logCounter} Time:${TimeStamp} ${returnObject}`)
+    if (debugLog) {
+      console.log(`HANDLER. ${logCounter} Time:${TimeStamp} Module(${moduleName}) ${rtnObj}`)
     }
-    const RowUpdate = returnObject.returnValue
-    if (!RowUpdate) {
-      if (log)
-        console.log(`HANDLER. ${logCounter} Time:${TimeStamp} Module ${reference} received No Data`)
+    const rtnValue = rtnObj.rtnValue
+    if (!rtnValue) {
+      if (debugLog)
+        console.log(
+          `HANDLER. ${logCounter} Time:${TimeStamp} Module(${moduleName}) Module ${moduleName} received No Data`
+        )
     }
     //
     //  Log return values
     //
-    const records = Object.keys(returnObject.returnRows).length
+    const records = Object.keys(rtnObj.rtnRows).length
     logMessage = logMessage + `(${records})`
     console.log(logMessage)
-    return res.status(200).json(returnObject.returnRows)
+    return res.status(200).json(rtnObj)
     //
     // Errors
     //
   } catch (err) {
     logMessage = logMessage + ` Error(${err.message})`
     console.log(logMessage)
-    returnObject.returnCatch = true
-    returnObject.returnCatchMsg = err.message
-    returnObject.returnCatchFunction = CatchFunction
-    return res.status(400).send(returnObject)
+    rtnObj.rtnCatch = true
+    rtnObj.rtnCatchMsg = err.message
+    rtnObj.rtnCatchFunction = moduleName
+    return res.status(400).json(rtnObj)
   }
 }
-
 //!==================================================================================
 //! Exports
 //!==================================================================================

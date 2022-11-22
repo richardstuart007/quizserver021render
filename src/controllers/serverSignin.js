@@ -7,19 +7,19 @@ const serverSigninHandler = require('./serverSigninHandler')
 // Constants
 //
 const debugLog = false
-const reference = 'serverSignin'
+const moduleName = 'serverSignin'
 //
 //  Global Variable - Define return object
 //
 const CatchFunction = 'serverSignin'
-var returnObject = {
-  returnValue: '',
-  returnMessage: '',
-  returnSqlFunction: '',
-  returnCatchFunction: '',
-  returnCatch: false,
-  returnCatchMsg: '',
-  returnRows: []
+let rtnObj = {
+  rtnValue: '',
+  rtnMessage: '',
+  rtnSqlFunction: moduleName,
+  rtnCatchFunction: '',
+  rtnCatch: false,
+  rtnCatchMsg: '',
+  rtnRows: []
 }
 //==================================================================================
 //= Signin a User
@@ -29,68 +29,59 @@ async function serverSignin(req, res, db, logCounter) {
   //  Time Stamp
   //
   const TimeStamp = format(new Date(), 'yyLLddHHmmss')
-  let logMessage = `Handler. ${logCounter} Time:${TimeStamp}`
+  let logMessage = `Handler. ${logCounter} Time:${TimeStamp} Module(${moduleName})`
 
   try {
-    //
-    // Initialise Global Variables
-    //
-    returnObject.returnValue = false
-    returnObject.returnMessage = ''
-    returnObject.returnSqlFunction = ''
-    returnObject.returnCatchFunction = ''
-    returnObject.returnCatch = ''
-    returnObject.returnCatchMsg = ''
-    returnObject.returnRows = []
     //..................................................................................
     //. Check values sent in Body
     //..................................................................................
     const bodyParms = req.body
-    const { email, password } = bodyParms
+    const { user, password } = bodyParms
     //
     //  Check required parameters
     //
-    if (!email || !password) {
-      returnObject.returnMessage = `Email or Password empty`
-      returnObject.returnCatchFunction = CatchFunction
-      return res.status(400).json(returnObject)
+    if (!user || !password) {
+      rtnObj.rtnMessage = `User or Password empty`
+      rtnObj.rtnCatchFunction = CatchFunction
+      return res.status(400).json(rtnObj)
     }
     //
     // Process Request Promises(ALL)
     //
     const returnData = await Promise.all([serverSigninHandler.serverSigninHandler(db, bodyParms)])
-    if (debugLog) console.log(`returnData `, returnData)
+    if (debugLog) console.log(`module(${moduleName}) returnData `, returnData)
     //
     // Parse Results
     //
     const returnDataObject = returnData[0]
-    returnObject = Object.assign({}, returnObject, returnDataObject)
+    rtnObj = Object.assign({}, returnDataObject)
     //
     //  Error
     //
-    const returnValue = returnObject.returnValue
-    if (!returnValue) {
-      if (debugLog)
-        console.log(`HANDLER. ${logCounter} Time:${TimeStamp} ${reference} received No Data`)
-      return res.status(400).send(returnObject)
+    const rtnValue = rtnObj.rtnValue
+    if (!rtnValue) {
+      if (debugLog) console.log(`module(${moduleName}) rtnObj `, rtnObj)
+      return res.status(220).send(rtnObj)
     }
     //
     //  Log return values
     //
-    const records = Object.keys(returnObject.returnRows).length
-    logMessage = logMessage + `(${records})`
+    const records = Object.keys(rtnObj.rtnRows).length
+    logMessage = logMessage + ` records(${records})`
     console.log(logMessage)
-    return res.status(200).json(returnObject.returnRows)
+    if (debugLog) console.log(`module(${moduleName}) rtnObj `, rtnObj)
+    return res.status(200).json(rtnObj)
     //
     // Errors
     //
   } catch (err) {
     logMessage = logMessage + ` Error(${err.message})`
     console.log(logMessage)
-    returnObject.returnCatch = true
-    returnObject.returnCatchMsg = err.message
-    returnObject.returnCatchFunction = CatchFunction
-    return res.status(400).send(returnObject)
+    rtnObj.rtnCatch = true
+    rtnObj.rtnCatchMsg = err.message
+    rtnObj.rtnCatchFunction = CatchFunction
+    if (debugLog) console.log(`module(${moduleName}) rtnObj `, rtnObj)
+    return res.status(400).send(rtnObj)
   }
 }
 //!==================================================================================

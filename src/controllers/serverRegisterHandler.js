@@ -6,20 +6,18 @@ const bcrypt = require('bcrypt')
 // Constants
 //
 const debugLog = false
-const reference = 'serverRegisterHandler'
-//
-//  Global Variable - Define return object
-//
-const CatchFunction = 'serverRegisterHandler'
-const SqlFunction = 'serverRegisterHandler'
-var returnObject = {
-  returnValue: false,
-  returnMessage: '',
-  returnSqlFunction: '',
-  returnCatchFunction: '',
-  returnCatch: false,
-  returnCatchMsg: '',
-  returnRows: []
+const moduleName = 'serverRegisterHandler'
+//.................................
+//  Object returned by this module
+//.................................
+const rtnObj = {
+  rtnValue: false,
+  rtnMessage: '',
+  rtnSqlFunction: moduleName,
+  rtnCatchFunction: '',
+  rtnCatch: false,
+  rtnCatchMsg: '',
+  rtnRows: []
 }
 //==================================================================================
 //= Main ASYNC Function
@@ -27,19 +25,10 @@ var returnObject = {
 async function serverRegisterHandler(db, bodyParms) {
   try {
     //
-    // Initialise Global Variables
-    //
-    returnObject.returnValue = false
-    returnObject.returnMessage = ''
-    returnObject.returnSqlFunction = SqlFunction
-    returnObject.returnCatchFunction = ''
-    returnObject.returnCatch = ''
-    returnObject.returnCatchMsg = ''
-    returnObject.returnRows = []
-    //
     //  Destructure Parameters
     //
     const {
+      user,
       email,
       name,
       password,
@@ -53,12 +42,13 @@ async function serverRegisterHandler(db, bodyParms) {
       skipcorrect,
       admin
     } = bodyParms
-    if (debugLog) console.log(`${reference} - Register(${email}) name(${name})`)
+    if (debugLog) console.log(`module(${moduleName}) 1 User(${user}) Email(${email}) name(${name})`)
     //
     // Get Database record (ASYNC)
     //
-    const data = await updateDatabase(
+    await sqlDatabase(
       db,
+      user,
       email,
       name,
       password,
@@ -72,40 +62,24 @@ async function serverRegisterHandler(db, bodyParms) {
       skipcorrect,
       admin
     )
-    //
-    // Return Results
-    //
-    await data
-    if (debugLog) console.log('data ', data)
-    //
-    // Update Return Values
-    //
-    if (data) {
-      returnObject.returnValue = true
-      returnObject.returnMessage = `Register User: SUCCESS`
-      returnObject.returnRows = data
-    } else {
-      returnObject.returnValue = false
-      returnObject.returnMessage = `Register User: FAILED`
-      returnObject.returnRows = data
-    }
-    return returnObject
+    return rtnObj
     //
     // Errors
     //
   } catch (err) {
-    console.log(err.message)
-    returnObject.returnCatch = true
-    returnObject.returnCatchMsg = err.message
-    returnObject.returnCatchFunction = CatchFunction
-    return returnObject
+    console.log(`module(${moduleName}) `, err.message)
+    rtnObj.rtnCatch = true
+    rtnObj.rtnCatchMsg = err.message
+    rtnObj.rtnCatchFunction = moduleName
+    return rtnObj
   }
 }
 //!==================================================================================
 //! Main function - Await
 //!==================================================================================
-async function updateDatabase(
+async function sqlDatabase(
   db,
+  user,
   email,
   name,
   password,
@@ -119,14 +93,9 @@ async function updateDatabase(
   skipcorrect,
   admin
 ) {
-  //
-  // Define Return Variable
-  //
-  let data_users = false
-  //
-  //
+  let data_users
   try {
-    if (debugLog) console.log('Start db transaction')
+    if (debugLog) console.log(`module(${moduleName}) 5 Start db transaction`)
     //-------------------------------------------------------------
     //  Hash the password
     //-------------------------------------------------------------
@@ -138,22 +107,20 @@ async function updateDatabase(
     const data_userspwd = await db
       .insert({
         uphash: hash,
-        upemail: email
+        upuser: user
       })
       .into('userspwd')
       .returning('*')
-
-    await data_userspwd
-    if (debugLog) console.log('data_userspwd ', data_userspwd)
     //-------------------------------------------------------------
     //  Users Insert
     //-------------------------------------------------------------
     const u_id = data_userspwd[0].upid
-    if (debugLog) console.log('u_id ', u_id)
+    if (debugLog) console.log(`module(${moduleName})u_id `, u_id)
     data_users = await db
       .insert({
         u_id: u_id,
         u_name: name,
+        u_user: user,
         u_email: email,
         u_admin: admin,
         u_fedid: fedid,
@@ -168,21 +135,42 @@ async function updateDatabase(
       })
       .into('users')
       .returning('*')
-    await data_users
-    if (debugLog) console.log('data_users ', data_users)
     //-------------------------------------------------------------
-    //  Return user added
+    //  Registration failed
     //-------------------------------------------------------------
-    return data_users
+    if (!data_users || !data_users[0]) {
+      rtnObj.rtnMessage = `Register User: FAILED`
+      if (debugLog) console.log(`module(${moduleName}) rtnMessage `, rtnObj.rtnMessage)
+      return
+    }
+    //-------------------------------------------------------------
+    //  Registration SUCCESS
+    //-------------------------------------------------------------
+    if (debugLog) console.log(`module(${moduleName}) data_users `, data_users)
+    rtnObj.rtnValue = true
+    rtnObj.rtnMessage = `Register User: SUCCESS`
+    rtnObj.rtnRows = data_users
+    return
     //-------------------------------------------------------------
     // Errors
     //-------------------------------------------------------------
   } catch (err) {
-    console.log(err.message)
-    returnObject.returnCatch = true
-    returnObject.returnCatchMsg = err.message
-    returnObject.returnCatchFunction = CatchFunction
-    return null
+    //
+    //  Constraint (duplicate) error
+    //
+    const message = err.message
+    if (message.includes('duplicate') && message.includes('userspwd_user')) {
+      rtnObj.rtnMessage = 'Registration User already exists'
+      if (debugLog) console.log(`module(${moduleName}) rtnMessage `, rtnObj.rtnMessage)
+      return
+    }
+    //
+    //  Other errors
+    //
+    rtnObj.rtnCatch = true
+    rtnObj.rtnCatchMsg = err.message
+    rtnObj.rtnCatchFunction = moduleName
+    return
   }
 }
 //!==================================================================================

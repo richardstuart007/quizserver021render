@@ -91,7 +91,7 @@ function logRawTables(req, fetchAction, fetchRoute, handler) {
   //
   //  Format Message & Log
   //
-  let logMessage = `Server.. ${logCounter} Time:${TimeStamp}`
+  let logMessage = `Server.. ${logCounter} Time:${TimeStamp} Module(${moduleName})`
   if (sqlTable) logMessage = logMessage + ` Table(${sqlTable})`
   logMessage =
     logMessage +
@@ -112,17 +112,17 @@ function logRawSignIn(req, fetchAction) {
   //
   //  Destructure Parameters
   //
-  const { email, name, sqlClient } = req.body
+  const { user, name, sqlClient } = req.body
   const { id } = req.params
   //
   //  Counter
   //
-  const TimeStamp = format(new Date(), 'HHmmss')
+  const TimeStamp = format(new Date(), 'yyLLddHHmmss')
   logCounter = logCounter + 1
   //
   // Format message & Log
   //
-  let logMessage = `SERVER.. ${logCounter} Time:${TimeStamp} sqlClient(${sqlClient}) fetchAction(${fetchAction}) Email(${email}) `
+  let logMessage = `Server.. ${logCounter} Time:${TimeStamp} Module(${moduleName}) sqlClient(${sqlClient}) fetchAction(${fetchAction}) User(${user})`
   if (name) logMessage.concat(` Name(${name})`)
   if (id) logMessage.concat(` ID(${id})`)
   console.log(logMessage)

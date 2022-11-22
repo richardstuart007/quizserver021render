@@ -2,9 +2,13 @@
 //  Libraries
 //
 const express = require('express')
+const { format } = require('date-fns')
+//
+//  Components
+//
 const myCorsLocalRemote = require('./../myCors/myCorsLocalRemote')
 const myRouterLocalRemote = require('./../myRouter/myRouterLocalRemote')
-const { format } = require('date-fns')
+
 //..............................................................................
 //.  Initialisation
 //.............................................................................
@@ -35,5 +39,5 @@ app.use(myRouterLocalRemote)
 //.  Start Server
 //.............................................................................
 const TimeStamp = format(new Date(), 'yyLLddHHmmss')
-let logMessage = `SERVER.. ${logCounter} Time:${TimeStamp} serverName(${serverName}) running on PORT(${REMOTE_URL_PORT})`
+let logMessage = `Server.. ${logCounter} Time:${TimeStamp} Module(${moduleName}) serverName(${serverName}) running on PORT(${REMOTE_URL_PORT})`
 app.listen(REMOTE_URL_PORT, () => console.log(logMessage))
