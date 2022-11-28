@@ -6,9 +6,8 @@ const { format } = require('date-fns')
 //
 //  Components
 //
-const myCorsLocalRemote = require('./../myCors/myCorsLocalRemote')
-const myRouterLocalRemote = require('./../myRouter/myRouterLocalRemote')
-
+const myCorsLocLoc7 = require('../myCors/myCorsLocLoc7')
+const myRouterLocLoc7 = require('../myRouter/myRouterLocLoc7')
 //..............................................................................
 //.  Initialisation
 //.............................................................................
@@ -16,11 +15,11 @@ const myRouterLocalRemote = require('./../myRouter/myRouterLocalRemote')
 //  Counter
 //
 let logCounter = 0
-const serverName = 'serverLocalRemote'
+const moduleName = 'serverLocLoc7'
 //
 // Constants
 //
-const { REMOTE_URL_PORT } = require('./serverConstants.js')
+const { PORT_LOC_LOC7 } = require('../constants.js')
 //
 // Express
 //
@@ -29,15 +28,15 @@ app.use(express.json())
 //
 //  Cors Middleware
 //
-app.options('*', myCorsLocalRemote)
-app.use(myCorsLocalRemote)
+app.options('*', myCorsLocLoc7)
+app.use(myCorsLocLoc7)
 //
 //  Router
 //
-app.use(myRouterLocalRemote)
+app.use(myRouterLocLoc7)
 //..............................................................................
 //.  Start Server
 //.............................................................................
 const TimeStamp = format(new Date(), 'yyLLddHHmmss')
-let logMessage = `Server.. ${logCounter} Time:${TimeStamp} Module(${moduleName}) serverName(${serverName}) running on PORT(${REMOTE_URL_PORT})`
-app.listen(REMOTE_URL_PORT, () => console.log(logMessage))
+let logMessage = `Server.. ${logCounter} Time:${TimeStamp} Module(${moduleName}) running on PORT(${PORT_LOC_LOC7})`
+app.listen(PORT_LOC_LOC7, () => console.log(logMessage))

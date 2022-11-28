@@ -2,7 +2,7 @@
 //  Libraries
 //
 const express = require('express')
-const myRouterLocalRemote = express.Router()
+const myRouterLocLoc7 = express.Router()
 const knex = require('knex')
 const { format } = require('date-fns')
 //
@@ -18,61 +18,59 @@ const serverSignin = require('../controllers/serverSignin')
 //  Counter
 //
 let logCounter = 0
-const moduleName = 'myRouterLocalRemote'
+const moduleName = 'myRouterLocLoc7'
 //
 // Constants
 //
 const {
-  REMOTE_KNEX_PORT,
-  REMOTE_KNEX_CLIENT,
-  REMOTE_KNEX_HOST,
-  REMOTE_KNEX_USER,
-  REMOTE_KNEX_PWD,
-  REMOTE_KNEX_DATABASE,
+  LOCAL_KNEX_CLIENT7,
+  LOCAL_KNEX_HOST7,
+  LOCAL_KNEX_USER7,
+  LOCAL_KNEX_PWD7,
+  LOCAL_KNEX_DATABASE7,
   URL_SIGNIN,
   URL_TABLES,
   URL_REGISTER
-} = require('./../server/serverConstants.js')
+} = require('../constants.js')
 //
 // Knex (LOCAL)
 //
 const db = knex({
-  client: REMOTE_KNEX_CLIENT,
+  client: LOCAL_KNEX_CLIENT7,
   connection: {
-    host: REMOTE_KNEX_HOST,
-    user: REMOTE_KNEX_USER,
-    password: REMOTE_KNEX_PWD,
-    database: REMOTE_KNEX_DATABASE,
-    port: REMOTE_KNEX_PORT
+    host: LOCAL_KNEX_HOST7,
+    user: LOCAL_KNEX_USER7,
+    password: LOCAL_KNEX_PWD7,
+    database: LOCAL_KNEX_DATABASE7
   }
 })
 //
 //  Log setup
 //
 console.log(
-  `${moduleName} Database Connection==> Client(${REMOTE_KNEX_CLIENT}) host(${REMOTE_KNEX_HOST}) user(${REMOTE_KNEX_USER}) database(${REMOTE_KNEX_DATABASE})`
+  `module(${moduleName}) Database Connection==> Client(${LOCAL_KNEX_CLIENT7}) host(${LOCAL_KNEX_HOST7}) user(${LOCAL_KNEX_USER7}) database(${LOCAL_KNEX_DATABASE7})`
 )
 //.............................................................................
 //.  Routes - Tables
 //.............................................................................
-myRouterLocalRemote.post(URL_TABLES, (req, res) => {
+myRouterLocLoc7.post(URL_TABLES, (req, res) => {
   logRawTables(req, 'POST', 'RAW', 'serverRaw')
   serverRaw.serverRaw(req, res, db, logCounter)
 })
 
-myRouterLocalRemote.delete(URL_TABLES, (req, res) => {
+myRouterLocLoc7.delete(URL_TABLES, (req, res) => {
   logRawTables(req, 'DELETE', 'RAW', 'serverRaw')
   serverRaw.serverRaw(req, res, db, logCounter)
 })
 //.............................................................................
 //.  Routes - Register/SignIn
 //.............................................................................
-myRouterLocalRemote.post(URL_SIGNIN, (req, res) => {
+myRouterLocLoc7.post(URL_SIGNIN, (req, res) => {
   logRawSignIn(req, 'POST Signin')
   serverSignin.serverSignin(req, res, db, logCounter)
 })
 
-myRouterLocalRemote.post(URL_REGISTER, (req, res) => {
+myRouterLocLoc7.post(URL_REGISTER, (req, res) => {
   logRawSignIn(req, 'POST Register')
   serverRegister.serverRegister(req, res, db, logCounter)
 })
@@ -89,7 +87,7 @@ function logRawTables(req, fetchAction, fetchRoute, handler) {
   //  Timestamp and Counter
   //
   const TimeStamp = format(new Date(), 'yyLLddHHmmss')
-  logCounter = logCounter + 1
+  logCounter++
   //
   //  Format Message & Log
   //
@@ -120,7 +118,7 @@ function logRawSignIn(req, fetchAction) {
   //  Counter
   //
   const TimeStamp = format(new Date(), 'yyLLddHHmmss')
-  logCounter = logCounter + 1
+  logCounter++
   //
   // Format message & Log
   //
@@ -130,4 +128,4 @@ function logRawSignIn(req, fetchAction) {
   console.log(logMessage)
 }
 //.............................................................................
-module.exports = myRouterLocalRemote
+module.exports = myRouterLocLoc7

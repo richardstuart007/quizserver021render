@@ -5,11 +5,11 @@
   "description": "Quiz Server",
   "main": "node src/server/serverRemote.js",
   "scripts": {
-    "start": "node src/server/serverRemote.js",
-    "startlocal": "node src/server/serverLocal.js",
-    "startlocalTest": "node src/server/serverLocalTest.js",
-    "startlocalremote": "node src/server/serverLocalRemote.js",
-    "dev": "nodemon src/server/serverLocalTest.js"
+    "start": "node src/server/serverRemote1.js",
+    "startlocrem1": "node src/server/serverLocRem1.js",
+    "startlocrem2": "node src/server/serverLocRem2.js",
+    "startlocloc6": "node src/server/serverLocLoc6.js",
+    "startlocloc7": "node src/server/serverLocLoc7.js"
   },
   "author": "Richard",
   "license": "ISC",
