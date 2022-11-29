@@ -50,22 +50,10 @@ exports.CORS_WHITELIST_SRVREM_DBREM1 = [
   'http://localhost:13011',
   'http://localhost:12011'
 ]
-exports.CORS_WHITELIST_SRVLOC_DBREM1 = [
-  'http://localhost:13101', // quiz, local server 1, remote DB 1
-  'http://localhost:12101' // data, local server 1, remote DB 1
-]
-exports.CORS_WHITELIST_SRVLOC_DBREM2 = [
-  'http://localhost:13202', // quiz, local server 2, remote DB 2
-  'http://localhost:12202' // data, local server 2, remote DB 2
-]
-exports.CORS_WHITELIST_SRVLOC_DBLOC6 = [
-  'http://localhost:13606', // quiz, local server 6, local DB 6
-  'http://localhost:12606' // data, local server 6, local DB 6
-]
-exports.CORS_WHITELIST_SRVLOC_DBLOC7 = [
-  'http://localhost:13707', // quiz, local server 7, local DB 7
-  'http://localhost:12707' // data, local server 7, local DB 7
-]
+exports.CORS_WHITELIST_SRVLOC_DBREM1 = ['http://localhost:13101', 'http://localhost:12101']
+exports.CORS_WHITELIST_SRVLOC_DBREM2 = ['http://localhost:13202', 'http://localhost:12202']
+exports.CORS_WHITELIST_SRVLOC_DBLOC6 = ['http://localhost:13606', 'http://localhost:12606']
+exports.CORS_WHITELIST_SRVLOC_DBLOC7 = ['http://localhost:13707', 'http://localhost:12707']
 //------------------------------------------------------------------------
 //  URL
 //------------------------------------------------------------------------
