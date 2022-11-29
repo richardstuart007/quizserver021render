@@ -46,7 +46,9 @@ exports.PORT_LOC_LOC7 = 11707
 //---------------------------------------------------------------------
 exports.CORS_WHITELIST_SRVREM_DBREM1 = [
   'https://quizclient021render.onrender.com', // quiz, remote, remote server, remote DB
-  'https://quizdataentry021render.onrender.com' // data, remote, remote server, remote DB
+  'https://quizdataentry021render.onrender.com', // data, remote, remote server, remote DB
+  'http://localhost:13011', // quiz, rem server 1, remote DB 1
+  'http://localhost:12011' // data, rem server 1, remote DB 1
 ]
 exports.CORS_WHITELIST_SRVLOC_DBREM1 = [
   'http://localhost:13101', // quiz, local server 1, remote DB 1
