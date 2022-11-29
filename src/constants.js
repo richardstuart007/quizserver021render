@@ -35,12 +35,12 @@ exports.LOCAL_KNEX_DATABASE7 = 'Bridge7'
 //------------------------------------------------------------------------
 //  PORTS
 //------------------------------------------------------------------------
-exports.PORT_REM_REM1 = 4011
-exports.PORT_REM_REM2 = 4022
-exports.PORT_LOC_REM1 = 1101
-exports.PORT_LOC_REM2 = 1202
-exports.PORT_LOC_LOC6 = 1606
-exports.PORT_LOC_LOC7 = 1707
+exports.PORT_REM_REM1 = 11011
+exports.PORT_REM_REM2 = 11022
+exports.PORT_LOC_REM1 = 11101
+exports.PORT_LOC_REM2 = 11202
+exports.PORT_LOC_LOC6 = 11606
+exports.PORT_LOC_LOC7 = 11707
 //---------------------------------------------------------------------
 //  corsWhitelist
 //---------------------------------------------------------------------
@@ -49,20 +49,20 @@ exports.CORS_WHITELIST_SRVREM_DBREM1 = [
   'https://quizdataentry021render.onrender.com' // data, remote, remote server, remote DB
 ]
 exports.CORS_WHITELIST_SRVLOC_DBREM1 = [
-  'http://localhost:3101', // quiz, local server 1, remote DB 1
-  'http://localhost:2101' // data, local server 1, remote DB 1
+  'http://localhost:13101', // quiz, local server 1, remote DB 1
+  'http://localhost:12101' // data, local server 1, remote DB 1
 ]
 exports.CORS_WHITELIST_SRVLOC_DBREM2 = [
-  'http://localhost:3202', // quiz, local server 2, remote DB 2
-  'http://localhost:2202' // data, local server 2, remote DB 2
+  'http://localhost:13202', // quiz, local server 2, remote DB 2
+  'http://localhost:12202' // data, local server 2, remote DB 2
 ]
 exports.CORS_WHITELIST_SRVLOC_DBLOC6 = [
-  'http://localhost:3606', // quiz, local server 6, local DB 6
-  'http://localhost:2606' // data, local server 6, local DB 6
+  'http://localhost:13606', // quiz, local server 6, local DB 6
+  'http://localhost:12606' // data, local server 6, local DB 6
 ]
 exports.CORS_WHITELIST_SRVLOC_DBLOC7 = [
-  'http://localhost:3707', // quiz, local server 7, local DB 7
-  'http://localhost:2707' // data, local server 7, local DB 7
+  'http://localhost:13707', // quiz, local server 7, local DB 7
+  'http://localhost:12707' // data, local server 7, local DB 7
 ]
 //------------------------------------------------------------------------
 //  URL
