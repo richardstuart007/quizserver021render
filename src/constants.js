@@ -35,8 +35,8 @@ exports.LOCAL_KNEX_DATABASE7 = 'Bridge7'
 //------------------------------------------------------------------------
 //  PORTS
 //------------------------------------------------------------------------
-exports.PORT_REM_REM1 = 1011
-exports.PORT_REM_REM2 = 1022
+exports.PORT_REM_REM1 = 4011
+exports.PORT_REM_REM2 = 4022
 exports.PORT_LOC_REM1 = 1101
 exports.PORT_LOC_REM2 = 1202
 exports.PORT_LOC_LOC6 = 1606
