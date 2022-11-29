@@ -8,7 +8,6 @@ const { format } = require('date-fns')
 //
 const myCorsRemote1 = require('../myCors/myCorsRemote1')
 const myRouterRemote1 = require('../myRouter/myRouterRemote1')
-
 //..............................................................................
 //.  Initialisation
 //.............................................................................
