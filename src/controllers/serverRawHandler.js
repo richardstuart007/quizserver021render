@@ -23,6 +23,16 @@ const rtnObj = {
 //==================================================================================
 async function serverRawHandler(db, bodyParms) {
   try {
+    //
+    //  Initialise Values
+    //
+    rtnObj.rtnValue = false
+    rtnObj.rtnMessage = ''
+    rtnObj.rtnSqlFunction = moduleName
+    rtnObj.rtnCatchFunction = ''
+    rtnObj.rtnCatch = false
+    rtnObj.rtnCatchMsg = ''
+    rtnObj.rtnRows = []
     //..................................................................................
     //. Parameter Validation
     //..................................................................................

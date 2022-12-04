@@ -30,6 +30,16 @@ async function serverRaw(req, res, db, logCounter) {
   const TimeStamp = format(new Date(), 'yyLLddHHmmss')
   let logMessage = `Handler. ${logCounter} Time:${TimeStamp} Module(${moduleName})`
   try {
+    //
+    //  Initialise Values
+    //
+    rtnObj.rtnValue = false
+    rtnObj.rtnMessage = ''
+    rtnObj.rtnSqlFunction = moduleName
+    rtnObj.rtnCatchFunction = ''
+    rtnObj.rtnCatch = false
+    rtnObj.rtnCatchMsg = ''
+    rtnObj.rtnRows = []
     //..................................................................................
     //. Check values sent in Body
     //..................................................................................
