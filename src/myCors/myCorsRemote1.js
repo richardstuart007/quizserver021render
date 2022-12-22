@@ -1,5 +1,5 @@
 const myCorsRemote = require('cors')
-const debugLog = true
+const debugLog = false
 //
 // Whitelist of valid hosts
 //

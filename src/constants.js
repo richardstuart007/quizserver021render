@@ -8,14 +8,14 @@ exports.REMOTE_KNEX_USER1 = 'wdscnzxj'
 exports.REMOTE_KNEX_PWD1 = 'O-7H6IKT6Hhi_xGU7J_rHSBjvbNO218s'
 exports.REMOTE_KNEX_DATABASE1 = 'wdscnzxj'
 //------------------------------------------------------------------------
-//  Database (Remote 2)
+//  Database (Remote 2) postgresql://postgres:MpshoqIm2WsiSFOTH2j8@containers-us-west-176.railway.app:5975/railway
 //------------------------------------------------------------------------
 exports.REMOTE_KNEX_CLIENT2 = 'pg'
-exports.REMOTE_KNEX_PORT2 = 5432
-exports.REMOTE_KNEX_HOST2 = 'rosie.db.elephantsql.com'
-exports.REMOTE_KNEX_USER2 = 'wdscnzxj'
-exports.REMOTE_KNEX_PWD2 = 'O-7H6IKT6Hhi_xGU7J_rHSBjvbNO218s'
-exports.REMOTE_KNEX_DATABASE2 = 'wdscnzxj'
+exports.REMOTE_KNEX_PORT2 = 5975
+exports.REMOTE_KNEX_HOST2 = 'containers-us-west-176.railway.app'
+exports.REMOTE_KNEX_USER2 = 'postgres'
+exports.REMOTE_KNEX_PWD2 = 'MpshoqIm2WsiSFOTH2j8'
+exports.REMOTE_KNEX_DATABASE2 = 'railway'
 //------------------------------------------------------------------------
 //  Database (Local 6)
 //------------------------------------------------------------------------
